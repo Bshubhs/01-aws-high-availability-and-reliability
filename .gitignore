@@ -1,0 +1,7 @@
+# Ignore all Archive folders and their contents anywhere in the repository
+**/Archive/
+**/Archive/**
+
+# OS specific files
+.DS_Store
+Thumbs.db
