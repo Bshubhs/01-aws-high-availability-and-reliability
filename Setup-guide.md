@@ -65,7 +65,7 @@ This guide sets up a high-availability, disaster recovery (HADR) architecture us
 
 ---
 
-## 🌍 Step 4: Configure Route 53 for DNS Failover (Optional)
+## 🌍 Step 4: Configure Route 53 for DNS Failover
 
 4.1 Create Public Hosted Zone
 - Domain: `example.com` (example)
@@ -89,9 +89,12 @@ This guide sets up a high-availability, disaster recovery (HADR) architecture us
 
 ## 🔁 Step 5: Perform DR Testing
 
-5.1 Stop all EC2 instances in Primary region (Mumbai)→ Route 53 will failover to Secondary region (Virginia). 
+5.1 (Pre‑step) In the Primary region (Mumbai), edit the Auto Scaling Group and set Desired capacity = 0 and Min capacity = 0.
+(This prevents the ASG from launching replacement EC2 instances when you stop them. Without this, failover won’t trigger properly.)
 
-5.2 Restart instances in Mumbai region → traffic will return to Mumbai region.
+5.2 Stop all EC2 instances in the Primary region (Mumbai) → Route 53 health checks will fail, and traffic will automatically failover to the Secondary region (Virginia).
+
+5.3 Restart instances in the Mumbai region by resetting the ASG capacities (e.g., Desired = 2, Min = 1, Max = 3) → Route 53 will detect healthy endpoints again and direct traffic back to the Primary region
 
 
 ---
